@@ -31,8 +31,9 @@ export const getUsers = async () => {
 };
 
 export const removeUser = async (id) => {
+  console.log(process.env.REACT_APP_API_URL);
   const data = await axios.delete(
-    `${process.env.REACT_APP_API_URL}/deleteUser/${id}`
+    `${process.env.REACT_APP_API_URL}/auth/deleteUser/${id}`
   );
   return data;
 };

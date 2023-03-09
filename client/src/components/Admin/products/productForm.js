@@ -16,8 +16,21 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../redux/categorySlice";
+import { addProduct, updateProduct } from "../redux/productSlice";
 
-const ProductForm = () => {
+const getInitialState = (editProduct) => {
+  return {
+    id: editProduct.id || undefined,
+    name: editProduct.name || "",
+    catId: editProduct.catId || "",
+    image: editProduct.image || "",
+    price: editProduct.price || 0,
+    quantity: editProduct.quantity || 0,
+    isAvailable: editProduct.isAvailable || false,
+  };
+};
+
+const ProductForm = ({ setOpenPopup, editProduct }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState({ preview: "", data: "" });
 
@@ -39,15 +52,7 @@ const ProductForm = () => {
     name: Yup.string().required("Product Name is required"),
   });
 
-  const initialValues = {
-    id: undefined,
-    name: "",
-    catId: "",
-    image: "",
-    price: 0,
-    quantity: 0,
-    isAvailable: false,
-  };
+  const initialValues = getInitialState(editProduct);
 
   const formik = useFormik({
     validationSchema,
@@ -55,8 +60,24 @@ const ProductForm = () => {
     initialValues,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
-      console.log("values are: ", values);
-      console.log("image is : ", image);
+
+      const { id, name, price, quantity, catId, isAvailable } = values;
+      const body = {
+        id,
+        name,
+        catId,
+        price,
+        isAvailable,
+        quantity,
+        image,
+      };
+
+      if (!id) {
+        dispatch(addProduct(body));
+      } else {
+        dispatch(updateProduct(body));
+      }
+      setOpenPopup(false);
     },
   });
 
@@ -129,21 +150,22 @@ const ProductForm = () => {
           type="file"
         />
       </Button>
-      {/* {values?.image && (
+      {values?.image && (
         <img src={values.image} alt="productphoto" width="50" height="50" />
-      )} */}
+      )}
       {image?.preview && (
         <img src={image.preview} alt="productphoto" width="50" height="50" />
       )}
 
       <FormControlLabel
-        control={<Switch />}
+        control={<Switch defaultChecked />}
         label="Available"
         onChange={(event) => {
           setFieldValue("isAvailable", Boolean(event.target.checked));
         }}
         sx={{ padding: "10px" }}
       />
+
       <Button
         type="submit"
         style={{ marginTop: 10 }}
