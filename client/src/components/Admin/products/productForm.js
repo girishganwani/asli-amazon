@@ -19,6 +19,7 @@ import { fetchCategories } from "../redux/categorySlice";
 import { addProduct, updateProduct } from "../redux/productSlice";
 
 const getInitialState = (editProduct) => {
+  console.log("from edit product ", editProduct.isAvailable);
   return {
     id: editProduct.id || undefined,
     name: editProduct.name || "",
@@ -160,6 +161,7 @@ const ProductForm = ({ setOpenPopup, editProduct }) => {
       <FormControlLabel
         control={<Switch defaultChecked />}
         label="Available"
+        checked={values.isAvailable}
         onChange={(event) => {
           setFieldValue("isAvailable", Boolean(event.target.checked));
         }}
