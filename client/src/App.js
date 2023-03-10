@@ -6,6 +6,7 @@ import Products from "./components/Admin/products";
 import Users from "./components/Admin/users";
 import SignIn from "./components/Auth/Auth";
 import SignUp from "./components/Auth/SignUp";
+import UserPannel from "./components/Users/userPannel";
 
 const App = () => {
   return (
@@ -18,6 +19,8 @@ const App = () => {
         <Route path="/admin/products" element={<Products />} />
         <Route path="/admin/users" element={<Users />} />
       </Route>
+
+      <Route path="/" element={<UserPannel />}></Route>
     </Routes>
   );
 };
