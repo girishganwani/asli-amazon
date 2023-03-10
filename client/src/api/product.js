@@ -1,8 +1,8 @@
-import axios from "axios";
+import httpClient from "./interceptor";
 
 export const saveProduct = async (productFormData) => {
-  const data = await axios.post(
-    `${process.env.REACT_APP_API_URL}/product/admin/addProduct`,
+  const data = await httpClient.post(
+    "/product/admin/addProduct",
     productFormData,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -12,8 +12,8 @@ export const saveProduct = async (productFormData) => {
 };
 
 export const updatingProduct = async ({ productFormData, id }) => {
-  const data = await axios.patch(
-    `${process.env.REACT_APP_API_URL}/product/admin/updateProduct/${id}`,
+  const data = await httpClient.patch(
+    `/product/admin/updateProduct/${id}`,
     productFormData,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -23,15 +23,11 @@ export const updatingProduct = async ({ productFormData, id }) => {
 };
 
 export const removeProduct = async (id) => {
-  const data = await axios.delete(
-    `${process.env.REACT_APP_API_URL}/product/admin/deleteProduct/${id}`
-  );
+  const data = await httpClient.delete(`/product/admin/deleteProduct/${id}`);
   return data;
 };
 
 export const getProducts = async () => {
-  const data = await axios.get(
-    `${process.env.REACT_APP_API_URL}/product/admin/fetchProducts`
-  );
+  const data = await httpClient.get(`/product/admin/fetchProducts`);
   return data;
 };

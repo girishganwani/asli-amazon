@@ -22,30 +22,29 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [updateProduct, setUpdateProduct] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
   const productsList = useSelector((state) => state?.product?.data);
+  console.log("Product List is :", productsList);
 
   useEffect(() => {
     if (productsList.length) {
       const newProductsList = productsList.map((product, index) => {
         return {
           id: index + 1,
-          catName: product.catId.categoryName,
+          catName: product?.catId?.categoryName,
           name: product.name,
           image: `${process.env.REACT_APP_API_URL}/${product.image}`,
           price: product.price,
           quantity: product.quantity,
           isAvailable: product.isAvailable,
           productId: product._id,
-          catId: product.catId._id,
+          catId: product.catId?._id,
         };
       });
       setProducts(newProductsList);
+    } else {
+      dispatch(fetchProducts());
     }
-  }, [productsList]);
+  }, [productsList, dispatch]);
 
   const handleUpdate = (row) => {
     const { catId, name, price, quantity, isAvailable, image, productId } = row;
