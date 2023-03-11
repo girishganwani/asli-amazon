@@ -1,8 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import path from "path";
 import authRoutes from "./router/authRoutes.js";
 import categoryRoutes from "./router/categoryRoutes.js";
+import productRoutes from "./router/productRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -13,9 +15,14 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "productImages")));
+
 app.use("/auth", authRoutes);
 
 app.use("/category", categoryRoutes);
+
+app.use("/product", productRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {
