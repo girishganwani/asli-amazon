@@ -1,4 +1,5 @@
-import axios from "axios";
+import httpClient from "./interceptor";
+
 
 export const saveCategory = async ({ categoryName, isAvailable, slug }) => {
   console.log("slug is : ", slug);
@@ -14,11 +15,13 @@ export const saveCategory = async ({ categoryName, isAvailable, slug }) => {
 };
 
 export const removeCategory = async ({ id }) => {
-  const { data } = await axios.delete(
-    `${process.env.REACT_APP_API_URL}/category/admin/deleteCategory/${id}`
+  const { data } = await httpClient.delete(
+    `/category/admin/deleteCategory/${id}`
   );
   return data;
 };
+
+
 
 export const editCategory = async ({ id, categoryName, isAvailable, slug }) => {
   const { data } = await axios.patch(
@@ -33,8 +36,6 @@ export const editCategory = async ({ id, categoryName, isAvailable, slug }) => {
 };
 
 export const getCategories = async () => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_API_URL}/category/admin/fetchCategories`
-  );
+  const { data } = await httpClient.get(`/category/admin/fetchCategories`);
   return data;
 };
