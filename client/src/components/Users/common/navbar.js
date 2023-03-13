@@ -10,6 +10,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LogoutIcon from "@mui/icons-material/Logout";
+import CategoriesMenu from "../categories/categoriesMenu";
 
 const Navbar = () => {
   return (
@@ -69,7 +70,7 @@ const Navbar = () => {
                 About Us
               </Link>
 
-              {/* <CategoriesMenu /> */}
+              <CategoriesMenu />
 
               <Link
                 to="contact"
