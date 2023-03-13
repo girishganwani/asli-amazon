@@ -31,3 +31,10 @@ export const getProducts = async () => {
   const data = await httpClient.get(`/product/admin/fetchProducts`);
   return data;
 };
+
+export const fetchProductsByCategory = async (slug) => {
+  const { data } = await httpClient.post(`/product/getProductsByCategory`, {
+    slug,
+  });
+  return data;
+};

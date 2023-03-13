@@ -22,11 +22,15 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [updateProduct, setUpdateProduct] = useState(null);
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   const productsList = useSelector((state) => state?.product?.data);
   console.log("Product List is :", productsList);
 
   useEffect(() => {
-    if (productsList.length) {
+    if (productsList?.length) {
       const newProductsList = productsList.map((product, index) => {
         return {
           id: index + 1,
@@ -41,10 +45,8 @@ const Products = () => {
         };
       });
       setProducts(newProductsList);
-    } else {
-      dispatch(fetchProducts());
     }
-  }, [productsList, dispatch]);
+  }, [productsList]);
 
   const handleUpdate = (row) => {
     const { catId, name, price, quantity, isAvailable, image, productId } = row;
