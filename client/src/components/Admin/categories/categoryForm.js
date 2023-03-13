@@ -35,7 +35,6 @@ const CategoryForm = ({ setOpenPopup, editCategoryList }) => {
       alert(JSON.stringify(values, null, 2));
       const { id, categoryName, isAvailable } = values;
       const slug = categoryName.toLowerCase().replaceAll(" ", "_");
-      console.log("Slug is : ", slug);
 
       if (id) {
         dispatch(updateCategory({ id, categoryName, isAvailable, slug }));

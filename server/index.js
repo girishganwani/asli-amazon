@@ -5,6 +5,7 @@ import path from "path";
 import authRoutes from "./router/authRoutes.js";
 import categoryRoutes from "./router/categoryRoutes.js";
 import productRoutes from "./router/productRoutes.js";
+import cartRoutes from "./router/cartRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -23,6 +24,8 @@ app.use("/auth", authRoutes);
 app.use("/category", categoryRoutes);
 
 app.use("/product", productRoutes);
+
+app.use("/cart", cartRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {

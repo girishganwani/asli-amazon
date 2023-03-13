@@ -1,4 +1,5 @@
 import productModel from "../models/product.js";
+import categoryModel from "../models/category.js";
 
 const getProducts = async () => {
   const products = await productModel.find().populate("catId");
@@ -60,6 +61,21 @@ export const updateProduct = async (req, res) => {
       image,
     });
     const products = await getProducts();
+    res.status(200).json({ data: products });
+  } catch (error) {
+    res.status(500).json({ msg: "Something went wrong!!!" });
+  }
+};
+
+export const getProductsByCategory = async (req, res) => {
+  const { slug } = req.body;
+  try {
+    const categoryId = await categoryModel.findOne({ slug }).select("_id");
+    if (!categoryId) {
+      return res.json({ data: [] });
+    }
+    const { _id: catId } = categoryId;
+    const products = await productModel.find({ catId });
     res.status(200).json({ data: products });
   } catch (error) {
     res.status(500).json({ msg: "Something went wrong!!!" });
