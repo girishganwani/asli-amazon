@@ -33,13 +33,14 @@ const CategoryForm = ({ setOpenPopup, editCategoryList }) => {
     initialValues,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
-      console.log("values are: ", values);
       const { id, categoryName, isAvailable } = values;
+      const slug = categoryName.toLowerCase().replaceAll(" ", "_");
+      console.log("Slug is : ", slug);
 
       if (id) {
-        dispatch(updateCategory({ id, categoryName, isAvailable }));
+        dispatch(updateCategory({ id, categoryName, isAvailable, slug }));
       } else {
-        dispatch(addCategory({ categoryName, isAvailable }));
+        dispatch(addCategory({ categoryName, isAvailable, slug }));
       }
       setOpenPopup(false);
     },

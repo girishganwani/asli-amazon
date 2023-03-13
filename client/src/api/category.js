@@ -1,10 +1,16 @@
 import httpClient from "./interceptor";
 
-export const saveCategory = async ({ categoryName, isAvailable }) => {
-  const { data } = await httpClient.post("/category/admin/addCategory", {
-    categoryName,
-    isAvailable,
-  });
+
+export const saveCategory = async ({ categoryName, isAvailable, slug }) => {
+  console.log("slug is : ", slug);
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_API_URL}/category/admin/addCategory`,
+    {
+      categoryName,
+      isAvailable,
+      slug,
+    }
+  );
   return data;
 };
 
@@ -15,12 +21,15 @@ export const removeCategory = async ({ id }) => {
   return data;
 };
 
-export const editCategory = async ({ id, categoryName, isAvailable }) => {
-  const { data } = await httpClient.patch(
-    `/category/admin/updateCategory/${id}`,
+
+
+export const editCategory = async ({ id, categoryName, isAvailable, slug }) => {
+  const { data } = await axios.patch(
+    `${process.env.REACT_APP_API_URL}/category/admin/updateCategory/${id}`,
     {
       categoryName,
       isAvailable,
+      slug,
     }
   );
   return data;

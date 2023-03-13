@@ -12,6 +12,7 @@ export const updateCategory = async (req, res) => {
     await categoryModel.findByIdAndUpdate(id, {
       categoryName,
       isAvailabe,
+      slug,
     });
     const categories = await fetchCategories();
     res.status(200).json({ data: categories });
@@ -41,11 +42,12 @@ export const deleteCategory = async (req, res) => {
 };
 
 export const addCategory = async (req, res) => {
-  const { categoryName, isAvailable } = req.body;
+  const { categoryName, isAvailable, slug } = req.body;
   try {
     const category = new categoryModel({
       categoryName,
       isAvailable,
+      slug,
     });
     await category.save();
     const categories = await fetchCategories();
