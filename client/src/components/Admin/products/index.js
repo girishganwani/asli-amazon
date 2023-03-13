@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -13,17 +13,56 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid } from "@mui/x-data-grid";
 import Popup from "../common/popup";
 import ProductForm from "./productForm";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProduct, fetchProducts } from "../redux/productSlice";
 
 const Products = () => {
+  const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [updateProduct, setUpdateProduct] = useState(null);
+
+  const productsList = useSelector((state) => state?.product?.data);
+  console.log("Product List is :", productsList);
+
+  useEffect(() => {
+    if (productsList.length) {
+      const newProductsList = productsList.map((product, index) => {
+        return {
+          id: index + 1,
+          catName: product?.catId?.categoryName,
+          name: product.name,
+          image: `${process.env.REACT_APP_API_URL}/${product.image}`,
+          price: product.price,
+          quantity: product.quantity,
+          isAvailable: product.isAvailable,
+          productId: product._id,
+          catId: product.catId?._id,
+        };
+      });
+      setProducts(newProductsList);
+    } else {
+      dispatch(fetchProducts());
+    }
+  }, [productsList, dispatch]);
+
+  const handleUpdate = (row) => {
+    const { catId, name, price, quantity, isAvailable, image, productId } = row;
+    setUpdateProduct({
+      id: productId,
+      name,
+      price,
+      isAvailable,
+      image,
+      catId,
+      quantity,
+    });
+    setOpenPopup(true);
+  };
+
   const editButton = (params) => {
     return (
-      <IconButton
-        color="secondary"
-        onClick={() => {
-          console.log("Edit button is clicked.");
-        }}
-      >
+      <IconButton color="secondary" onClick={() => handleUpdate(params.row)}>
         <UpdateIcon />
       </IconButton>
     );
@@ -34,7 +73,7 @@ const Products = () => {
       <IconButton
         aria-label="delete"
         onClick={() => {
-          console.log("Delete Button is clicked.");
+          dispatch(deleteProduct(params.row.productId));
         }}
       >
         <DeleteIcon />
@@ -72,36 +111,6 @@ const Products = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      catName: "category 1",
-      name: "product 1",
-      image: "image 1",
-      price: 100,
-      qunatity: 5,
-      isAvailable: true,
-    },
-    {
-      id: 2,
-      catName: "category 2",
-      name: "product 2",
-      image: "image 2",
-      price: 200,
-      qunatity: 10,
-      isAvailable: false,
-    },
-    {
-      id: 3,
-      catName: "category 3",
-      name: "product 3",
-      image: "image 3",
-      price: 300,
-      qunatity: 5,
-      isAvailable: true,
-    },
-  ];
-
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -115,11 +124,15 @@ const Products = () => {
               size="small"
               color="inherit"
               onClick={() => {
-                // setEditCategoryList({
-                //   id: null,
-                //   name: null,
-                //   status: null,
-                // });
+                setUpdateProduct({
+                  id: null,
+                  catId: null,
+                  name: null,
+                  price: null,
+                  quantity: null,
+                  image: null,
+                  isAvailable: null,
+                });
                 setOpenPopup(true);
               }}
             >
@@ -132,7 +145,7 @@ const Products = () => {
 
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={products}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
@@ -145,10 +158,7 @@ const Products = () => {
         setOpenPopup={setOpenPopup}
         title="Product Form"
       >
-        <ProductForm
-        // setOpenPopup={setOpenPopup}
-        // editCategoryList={editCategoryList}
-        />
+        <ProductForm setOpenPopup={setOpenPopup} editProduct={updateProduct} />
       </Popup>
     </>
   );
