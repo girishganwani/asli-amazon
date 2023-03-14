@@ -4,6 +4,7 @@ import {
   fetchProducts,
   deleteProduct,
   updateProduct,
+  getProductsByCategory,
 } from "../controllers/product.js";
 import multer from "multer";
 
@@ -24,5 +25,6 @@ router.post("/admin/addProduct", upload.single("image"), addProduct);
 router.get("/admin/fetchProducts", fetchProducts);
 router.delete("/admin/deleteProduct/:id", deleteProduct);
 router.patch("/admin/updateProduct/:id", upload.single("image"), updateProduct);
+router.post("/getProductsByCategory", getProductsByCategory);
 
 export default router;
