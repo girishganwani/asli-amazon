@@ -23,11 +23,12 @@ const Products = () => {
   const [updateProduct, setUpdateProduct] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    if (!products.length) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products]);
 
   const productsList = useSelector((state) => state?.product?.data);
-  console.log("Product List is :", productsList);
 
   useEffect(() => {
     if (productsList?.length) {
@@ -119,7 +120,7 @@ const Products = () => {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Categories
+              Products
             </Typography>
             <Button
               variant="outlined"

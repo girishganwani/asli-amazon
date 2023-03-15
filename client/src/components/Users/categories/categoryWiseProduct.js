@@ -17,13 +17,13 @@ export default function CategoryWiseProduct() {
   const dispatch = useDispatch();
   const { slug } = useParams();
 
-  useEffect(() => {
-    dispatch(getProductsByCategory(slug));
-  }, [slug, dispatch]);
-
   const categoryWiseProductsList = useSelector(
     (state) => state.productsByCategory.data
   );
+
+  useEffect(() => {
+    dispatch(getProductsByCategory(slug));
+  }, [slug, dispatch]);
 
   const handleCartButton = (product) => {
     console.log("cart button is clicked");
