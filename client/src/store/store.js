@@ -4,6 +4,8 @@ import categorySlice from "../components/Admin/redux/categorySlice";
 import productSlice from "../components/Admin/redux/productSlice";
 import productsByCategorySlice from "../components/Users/redux/productsByCategorySlice";
 import cartSlice from "../components/Users/redux/cartSlice";
+import wishListSlice from "../components/Users/redux/wishListSlice";
+import paymentSlice from "../components/Users/redux/paymentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +14,7 @@ export const store = configureStore({
     product: productSlice,
     productsByCategory: productsByCategorySlice,
     cart: cartSlice,
+    wishList: wishListSlice,
+    payment: paymentSlice,
   },
 });

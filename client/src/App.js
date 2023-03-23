@@ -8,6 +8,11 @@ import SignIn from "./components/Auth/Auth";
 import SignUp from "./components/Auth/SignUp";
 import UserPannel from "./components/Users/userPannel";
 import CategoryWiseProducts from "./components/Users/categories/categoryWiseProduct";
+import Cart from "./components/Users/cart/cart";
+import WishList from "./components/Users/wishList/wishList";
+import SuccessUrl from "./components/Users/payment/success";
+import CancelUrl from "./components/Users/payment/cancel";
+
 const App = () => {
   return (
     <Routes>
@@ -22,6 +27,10 @@ const App = () => {
 
       <Route path="/" element={<UserPannel />}>
         <Route path="/category/:slug" element={<CategoryWiseProducts />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<WishList />} />
+        <Route path="/payment/success" element={<SuccessUrl />} />
+        <Route path="/payment/cancel" element={<CancelUrl />} />
       </Route>
     </Routes>
   );
