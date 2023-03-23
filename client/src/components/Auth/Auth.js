@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { signIn } from "./redux/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -36,15 +37,18 @@ const theme = createTheme();
 
 export default function Auth() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
     dispatch(
-      signIn({ email: data.get("email"), password: data.get("password") })
+      signIn({
+        email: data.get("email"),
+        password: data.get("password"),
+        navigate,
+      })
     );
   };
 

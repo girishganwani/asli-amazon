@@ -4,14 +4,16 @@ import { logIn, logUp, getUsers, removeUser } from "../../../api/auth";
 export const signUp = createAsyncThunk("auth/signUp", async (body) => {
   const { navigate } = body;
   const data = await logUp(body);
-
   return { data, navigate };
 });
 
-export const signIn = createAsyncThunk("auth/signIn", async (body) => {
-  const data = await logIn(body);
-  return data;
-});
+export const signIn = createAsyncThunk(
+  "auth/signIn",
+  async ({ email, password, navigate }) => {
+    const { data } = await logIn({ email, password });
+    return { data, navigate };
+  }
+);
 
 export const fetchUsers = createAsyncThunk("auth/fetchUsers", async () => {
   const { data } = await getUsers();
@@ -28,10 +30,23 @@ export const authSlice = createSlice({
   initialState: {
     users: [],
   },
+  reducers: {
+    logout(state, action) {
+      localStorage.removeItem("userToken");
+      action.payload.navigate("/signin");
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
-      localStorage.setItem("userToken", state.data.token);
+      localStorage.setItem("userToken", action?.payload?.data?.token);
       alert("You are Logged In...");
+      const role = action.payload.data.data.role;
+      const navigate = action.payload.navigate;
+      if (role === 1) {
+        navigate("/admin/users");
+      } else {
+        navigate("/");
+      }
     });
     builder.addCase(signUp.fulfilled, (state, action) => {
       alert("Account Created Sucessfully");
@@ -46,4 +61,5 @@ export const authSlice = createSlice({
   },
 });
 
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

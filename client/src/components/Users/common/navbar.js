@@ -6,13 +6,27 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CategoriesMenu from "../categories/categoriesMenu";
+import CartButtonInNavbar from "../cart/cartButtonInNavbar";
+import WishListButtonInNavbar from "../wishList/wishListButtonInNavbar";
+import { logout } from "../../Auth/redux/authSlice";
+import { useDispatch } from "react-redux";
+import decode from "jwt-decode";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    const decodedToken = decode(token);
+    setUserName(decodedToken.name);
+  }, []);
+
   return (
     <>
       <Box
@@ -81,22 +95,15 @@ const Navbar = () => {
                 Contact Us
               </Link>
 
-              {/* <CartButtonInNavbar /> */}
+              <CartButtonInNavbar />
 
-              <IconButton
-                color="primary"
-                aria-label="add to shopping cart"
-                size="large"
-                // onClick={handleWishList}
-              >
-                <FavoriteIcon />
-              </IconButton>
-              <Tooltip title="userId">
+              <WishListButtonInNavbar />
+
+              <Tooltip title={userName}>
                 <IconButton
                   color="primary"
-                  // aria-label="add to shopping cart"
                   size="large"
-                  //   onClick={() => dispatch(adminLogout({ navigate }))}
+                  onClick={() => dispatch(logout({ navigate }))}
                 >
                   <LogoutIcon />
                 </IconButton>

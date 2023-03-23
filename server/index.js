@@ -6,6 +6,8 @@ import authRoutes from "./router/authRoutes.js";
 import categoryRoutes from "./router/categoryRoutes.js";
 import productRoutes from "./router/productRoutes.js";
 import cartRoutes from "./router/cartRoutes.js";
+import wishListRoutes from "./router/wishListRouter.js";
+import checkoutRoutes from "./router/checkoutRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -26,6 +28,10 @@ app.use("/category", categoryRoutes);
 app.use("/product", productRoutes);
 
 app.use("/cart", cartRoutes);
+
+app.use("/wishList", wishListRoutes);
+
+app.use("/checkout", checkoutRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {

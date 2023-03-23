@@ -56,6 +56,7 @@ export const signIn = async (req, res) => {
       {
         email: existingUser.email,
         id: existingUser._id,
+        name: existingUser.name,
       },
       "secretkey"
     );
