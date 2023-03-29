@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { logIn, logUp, getUsers, removeUser } from "../../../api/auth";
+import {
+  logIn,
+  logUp,
+  getUsers,
+  removeUser,
+  passwordForgot,
+} from "../../../api/auth";
 
 export const signUp = createAsyncThunk("auth/signUp", async (body) => {
   const { navigate } = body;
@@ -12,6 +18,14 @@ export const signIn = createAsyncThunk(
   async ({ email, password, navigate }) => {
     const { data } = await logIn({ email, password });
     return { data, navigate };
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async ({ email }) => {
+    const { data } = await passwordForgot({ email });
+    return { data };
   }
 );
 
@@ -58,6 +72,7 @@ export const authSlice = createSlice({
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.users = action.payload.data;
     });
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {});
   },
 });
 

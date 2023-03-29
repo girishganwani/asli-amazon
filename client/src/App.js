@@ -12,12 +12,14 @@ import Cart from "./components/Users/cart/cart";
 import WishList from "./components/Users/wishList/wishList";
 import SuccessUrl from "./components/Users/payment/success";
 import CancelUrl from "./components/Users/payment/cancel";
+import ForgotPassword from "./components/Auth/ForgotPassword";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/auth/forgotpassword" element={<ForgotPassword />} />
 
       <Route path="/admin" element={<Pannel />}>
         <Route path="/admin/categories" element={<Categories />} />

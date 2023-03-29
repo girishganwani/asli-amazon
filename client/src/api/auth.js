@@ -17,6 +17,11 @@ export const logIn = async ({ email, password }) => {
   return data;
 };
 
+export const passwordForgot = async ({ email }) => {
+  const data = await httpClient.post("auth/forgotPassword", { email });
+  return data;
+};
+
 export const getUsers = async () => {
   const data = await httpClient.get(`/auth/fetchUsers`);
   return data;
