@@ -3,15 +3,13 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { signIn } from "./redux/authSlice";
+import { forgotPassword } from "./redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 
@@ -22,24 +20,19 @@ function Copyright(props) {
       color="text.secondary"
       align="center"
       {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>
-      {new Date().getFullYear()}
-    </Typography>
+    ></Typography>
   );
 }
 
 const theme = createTheme();
 
-export default function Auth() {
+export default function ForgotPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const error = useSelector((state) => state.auth.error);
+  console.log("error is : ", error);
 
   useEffect(() => {
     if (error) {
@@ -50,14 +43,7 @@ export default function Auth() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    dispatch(
-      signIn({
-        email: data.get("email"),
-        password: data.get("password"),
-        navigate,
-      })
-    );
+    dispatch(forgotPassword({ email: data.get("email"), navigate }));
   };
 
   return (
@@ -85,7 +71,7 @@ export default function Auth() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Forgot Password
           </Typography>
           <Box
             component="form"
@@ -103,16 +89,6 @@ export default function Auth() {
               autoComplete="email"
               autoFocus
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
 
             <Button
               type="submit"
@@ -120,24 +96,8 @@ export default function Auth() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Submit
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link
-                  to="/auth/forgotpassword"
-                  variant="body2"
-                  underline="hover"
-                >
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link to="/signup" variant="body2" underline="hover">
-                  "Don't have an account? Sign Up"
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

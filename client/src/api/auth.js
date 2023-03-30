@@ -9,12 +9,34 @@ export const logUp = async ({ email, password, name }) => {
   return data;
 };
 
-export const logIn = async ({ email, password }) => {
-  const data = await httpClient.post(`/auth/signIn`, {
-    email,
-    password,
-  });
-  return data;
+export const logIn = async ({ email, password }, rejectWithValue) => {
+  try {
+    const data = await httpClient.post(`/auth/signIn`, {
+      email,
+      password,
+    });
+    return data;
+  } catch (e) {
+    throw rejectWithValue(e.response?.data?.msg);
+  }
+};
+
+export const passwordForgot = async ({ email }, rejectWithValue) => {
+  try {
+    const data = await httpClient.post("auth/forgotPassword", { email });
+    return data;
+  } catch (error) {
+    throw rejectWithValue(error.response?.data?.msg);
+  }
+};
+
+export const passwordReset = async ({ password, otp }, rejectWithValue) => {
+  try {
+    const data = await httpClient.post("auth/resetPassword", { password, otp });
+    return data;
+  } catch (error) {
+    throw rejectWithValue(error.response?.data?.msg);
+  }
 };
 
 export const getUsers = async () => {

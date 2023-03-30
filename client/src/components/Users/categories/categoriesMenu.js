@@ -18,13 +18,14 @@ const CategoriesMenu = () => {
     setAnchorEl(null);
   };
 
+  const categoryList = useSelector((state) => state.category.data);
+
   useEffect(() => {
     if (!categoryList?.length) {
       dispatch(fetchCategories());
     }
-  }, [dispatch]);
+  }, [dispatch, categoryList]);
 
-  const categoryList = useSelector((state) => state.category.data);
   return (
     <div>
       <Button
