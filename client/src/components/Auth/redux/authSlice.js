@@ -5,6 +5,7 @@ import {
   getUsers,
   removeUser,
   passwordForgot,
+  passwordReset,
 } from "../../../api/auth";
 
 export const signUp = createAsyncThunk("auth/signUp", async (body) => {
@@ -15,17 +16,27 @@ export const signUp = createAsyncThunk("auth/signUp", async (body) => {
 
 export const signIn = createAsyncThunk(
   "auth/signIn",
-  async ({ email, password, navigate }) => {
-    const { data } = await logIn({ email, password });
+  async ({ email, password, navigate }, { rejectWithValue }) => {
+    const { data } = await logIn({ email, password }, rejectWithValue);
+    console.log("here");
     return { data, navigate };
   }
 );
 
 export const forgotPassword = createAsyncThunk(
   "auth/forgotPassword",
-  async ({ email }) => {
-    const { data } = await passwordForgot({ email });
-    return { data };
+  async ({ email, navigate }, { rejectWithValue }) => {
+    const { data } = await passwordForgot({ email }, rejectWithValue);
+    return { data, navigate };
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async ({ password, otp, navigate }, { rejectWithValue }) => {
+    console.log("here");
+    const { data } = await passwordReset({ password, otp }, rejectWithValue);
+    return { data, navigate };
   }
 );
 
@@ -43,6 +54,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     users: [],
+    error: null,
   },
   reducers: {
     logout(state, action) {
@@ -62,6 +74,9 @@ export const authSlice = createSlice({
         navigate("/");
       }
     });
+    builder.addCase(signIn.rejected, (state, action) => {
+      state.error = action.payload;
+    });
     builder.addCase(signUp.fulfilled, (state, action) => {
       alert("Account Created Sucessfully");
       action.payload.navigate("/signin");
@@ -72,7 +87,21 @@ export const authSlice = createSlice({
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.users = action.payload.data;
     });
-    builder.addCase(forgotPassword.fulfilled, (state, action) => {});
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {
+      if (action.payload.data.msg === "OTP sent") {
+        action.payload.navigate("/auth/resetpassword");
+      }
+    });
+    builder.addCase(forgotPassword.rejected, (state, action) => {
+      state.error = action.payload;
+    });
+    builder.addCase(resetPassword.fulfilled, (state, action) => {
+      alert("Password Changed Successfully");
+      action.payload.navigate("/signin");
+    });
+    builder.addCase(resetPassword.rejected, (state, action) => {
+      state.error = action.payload;
+    });
   },
 });
 

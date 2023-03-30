@@ -13,6 +13,7 @@ import WishList from "./components/Users/wishList/wishList";
 import SuccessUrl from "./components/Users/payment/success";
 import CancelUrl from "./components/Users/payment/cancel";
 import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/auth/forgotpassword" element={<ForgotPassword />} />
+      <Route path ="/auth/resetpassword" element= {<ResetPassword />}/>
 
       <Route path="/admin" element={<Pannel />}>
         <Route path="/admin/categories" element={<Categories />} />

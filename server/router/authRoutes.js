@@ -5,6 +5,7 @@ import {
   fetchUsers,
   deleteUser,
   forgotPassword,
+  resetPassword
 } from "../controllers/auth.js";
 import auth from "../middleware/auth.js";
 const router = express.Router();
@@ -14,5 +15,6 @@ router.post("/signUp", signUp);
 router.post("/forgotPassword", forgotPassword);
 router.get("/fetchUsers", auth, fetchUsers);
 router.delete("/deleteUser/:id", auth, deleteUser);
+router.post("/resetPassword", resetPassword)
 
 export default router;
